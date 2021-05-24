@@ -11,4 +11,5 @@ replace github.com/smugalamunga/playground => ../playground
 //# export GOPRIVATE=github.com/smugalamunga/*
 //# go get github.com/smugalamunga/playground
 //# go mod edit -replace github.com/smugalamunga/playground=../playground
+//# git remote add origin https://github.com/smugalamunga/user.playground.git
 
