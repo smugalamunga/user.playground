@@ -21,6 +21,6 @@ generate:
 clean:
 	rm -rf pb/*
 	rm -rf cmd
-	rm -rf pkg/services/playground*
+	rm -rf pkg/services/user*
 	
 	
