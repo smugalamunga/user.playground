@@ -4,6 +4,7 @@ go 1.16
 
 require (
 	github.com/golang/protobuf v1.5.2
+	go.mongodb.org/mongo-driver v1.5.2 // indirect
 	golang.org/x/net v0.0.0-20210525063256-abc453219eb5 // indirect
 	golang.org/x/sys v0.0.0-20210521203332-0cec03c779c1 // indirect
 	google.golang.org/genproto v0.0.0-20210524171403-669157292da3 // indirect
@@ -22,4 +23,3 @@ replace github.com/smugalamunga/playground => ../playground
 //# go get google.golang.org/protobuf
 //# go get -u google.golang.org/grpc
 //# go mod tidy
-
