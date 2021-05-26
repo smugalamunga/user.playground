@@ -6,23 +6,121 @@ option java_multiple_files = true;
 
 option go_package = "github.com/smugalamunga/user.playground/pb";
 
+import "google/protobuf/timestamp.proto";
+
 message User {
     string id = 1;
-    string firstname = 2;
-    string lastname = 3;
-    string username = 4;
-    string password = 5;
-    string email_address = 6;
+
+    string username = 2;
+
+    string firstname = 3;
+
+    string lastname = 4;
+
+    string email_address = 5;
+
+    PersonalDetails personalDetails = 6;
+
+    Location location = 7;
+
+    UserImage image = 8;
+
+    google.protobuf.Timestamp created = 9;
+
+    google.protobuf.Timestamp updated = 10;
 }
 
-message ReturnValue {
-    bool success = 1;
-    string message = 2;
+message Location {
+    string id = 1;
+
+    double latitude = 2;
+    double longitude = 3;
 }
+
+enum Sex {
+    Sex_Not_Specified = 0;
+    Female = 1;
+    Male = 2;
+}
+
+message PersonalDetails {
+    string id = 1;
+
+    Sex sex = 2;
+
+    google.protobuf.Timestamp birthday = 3;
+}
+
+message Record {
+    google.protobuf.Timestamp created = 3;
+    google.protobuf.Timestamp updated = 4;
+}
+
+message UserFilter {
+    map<string, Filter> filters = 1;
+}
+
+message Filter {
+    string field = 1;
+
+    Direction direction = 2;
+}
+
+enum Direction {
+    Ascending = 0;
+    Descending = 1;
+}
+
+message UserImage {
+    ImageInfo info = 1;
+    bytes data = 2;
+}
+
+message ImageInfo {
+    ImageType type = 1;
+    uint32 size = 2;
+    string name = 3;
+}
+
+enum ImageType {
+    NO_IMAGE_TYPE = 0;
+
+    JPEG = 1;
+    PNG = 2;
+    GIF = 3;
+}
+
+message UploadImageRequest {
+    oneof data {
+        ImageInfo info = 1;
+        bytes chunk = 2;
+    }
+}
+
+message UploadImageResponse {
+    string id = 1;
+    uint32  size = 2;
+}
+
+message DownloadImageRequest {
+    string id = 1;
+    string filename = 2;
+}
+
+message DownloadImageResponse {
+    oneof data {
+        ImageInfo info = 1;
+        bytes chunk = 2;
+    }
+}
+
 
 service UserService {
     rpc Create(User) returns (User);
     rpc Find(User) returns (User);
+    rpc FindUsers(UserFilter) returns (stream User);
+    rpc Delete(User) returns(User);
     rpc Update(User) returns (User);
-    rpc Delete(User) returns (ReturnValue);
+    rpc UploadImage(stream UploadImageRequest) returns (UploadImageResponse);
+    rpc DownloadImage(DownloadImageRequest) returns (stream DownloadImageResponse);
 }

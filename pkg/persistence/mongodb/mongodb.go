@@ -17,11 +17,11 @@ var databaseName = "User"
 
 var database = persistence.NewPDatabase(databaseName)
 
-func init() {
+func Initialize() error {
 	ctx := context.Background()
 	p, err := persistence.NewPersistence(ctx, &configuration.PersistenceConfiguration{Hostname: "10.0.0.77", Port: 27017, Username: "root", Password: "example"}, logging.NewLogger())
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	database.Options = options.DatabaseOptions{}
@@ -37,7 +37,7 @@ func init() {
 
 	err = p.Generate(ctx)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	// userCollection.AddFilter()
@@ -45,6 +45,18 @@ func init() {
 	// catalogCollection.AddIndex()
 	// catalogCollection.AddValidator()
 	// catalogCollection.AddFilter()
+
+	return nil
+}
+
+func Destroy() error {
+	ctx := context.Background()
+	p, err := persistence.NewPersistence(ctx, &configuration.PersistenceConfiguration{Hostname: "10.0.0.77", Port: 27017, Username: "root", Password: "example"}, logging.NewLogger())
+	if err != nil {
+		return err
+	}
+	p.Drop(ctx, databaseName)
+	return nil
 }
 
 // Collection Names
