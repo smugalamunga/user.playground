@@ -3,6 +3,7 @@ module github.com/smugalamunga/user.playground
 go 1.16
 
 require (
+	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/go-cmp v0.5.5 // indirect
 	github.com/smugalamunga/playground v0.0.0-20210512110832-eaf2ab01155d
 	github.com/stretchr/testify v1.7.0 // indirect
