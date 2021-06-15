@@ -6,6 +6,8 @@ require (
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/go-cmp v0.5.5 // indirect
 	github.com/nats-io/nats.go v1.11.0 // indirect
+	github.com/onsi/ginkgo v1.16.4 // indirect
+	github.com/onsi/gomega v1.13.0 // indirect
 	github.com/reactivex/rxgo/v2 v2.5.0 // indirect
 	github.com/smugalamunga/messaging.playground v0.0.0-20210528144138-a0ced6d0fcbe // indirect
 	github.com/smugalamunga/playground v0.0.0-20210512110832-eaf2ab01155d
