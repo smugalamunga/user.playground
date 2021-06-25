@@ -11,15 +11,38 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+var _ (PersistenceInterface) = (*PersistenceImplementation)(nil)
+
+type PersistenceInterface interface {
+	Initialize(ctx context.Context) error
+	Destroy(ctx context.Context) error
+}
+
+type PersistenceImplementation struct {
+	cfg *configuration.PersistenceConfiguration
+}
+
+func NewPersistenceImplementation() *PersistenceImplementation {
+	return &PersistenceImplementation{
+		cfg: &configuration.PersistenceConfiguration{Hostname: "10.0.0.77", Port: 27017, Username: "root", Password: "example"},
+	}
+}
+
+func NewPersistenceImplementationConfiguration(cfg *configuration.PersistenceConfiguration) *PersistenceImplementation {
+	return &PersistenceImplementation{
+		cfg: cfg,
+	}
+}
+
 // Database Name
 
 var databaseName = "User"
 
 var database = persistence.NewPDatabase(databaseName)
 
-func Initialize() error {
-	ctx := context.Background()
-	p, err := persistence.NewPersistence(ctx, &configuration.PersistenceConfiguration{Hostname: "10.0.0.77", Port: 27017, Username: "root", Password: "example"}, logging.NewLogger())
+func (impl *PersistenceImplementation) Initialize(ctx context.Context) error {
+
+	p, err := persistence.NewPersistence(ctx, impl.cfg, logging.NewLogger())
 	if err != nil {
 		return err
 	}
@@ -49,9 +72,8 @@ func Initialize() error {
 	return nil
 }
 
-func Destroy() error {
-	ctx := context.Background()
-	p, err := persistence.NewPersistence(ctx, &configuration.PersistenceConfiguration{Hostname: "10.0.0.77", Port: 27017, Username: "root", Password: "example"}, logging.NewLogger())
+func (impl *PersistenceImplementation) Destroy(ctx context.Context) error {
+	p, err := persistence.NewPersistence(ctx, impl.cfg, logging.NewLogger())
 	if err != nil {
 		return err
 	}
