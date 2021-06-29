@@ -13,9 +13,20 @@ import (
 
 var _ (PersistenceInterface) = (*PersistenceImplementation)(nil)
 
+type UserID string
+
 type PersistenceInterface interface {
 	Initialize(ctx context.Context) error
+
 	Destroy(ctx context.Context) error
+
+	CreateUser(ctx context.Context, user User) error
+
+	FindUserByUsername(ctx context.Context, username string) (User, error)
+
+	DeleteUser(ctx context.Context) error
+
+	UpdateUser(ctx context.Context) error
 }
 
 type PersistenceImplementation struct {
@@ -34,9 +45,33 @@ func NewPersistenceImplementationConfiguration(cfg *configuration.PersistenceCon
 	}
 }
 
+func (impl *PersistenceImplementation) CreateUser(ctx context.Context, user User) (UserID, error) {
+	p, err := persistence.NewPersistence(ctx, impl.cfg, logging.NewLogger())
+	if err != nil {
+		return "", err
+	}
+	result, err = p.Create(ctx, databaseName, userCollectionName, user)
+	if err != nil {
+		return "", err
+	}
+	return UseriD(result.InsertedID.String()), nil
+}
+
+func (impl *PersistenceImplementation) FindUserByUsername(ctx context.Context, username string) (User, error) {
+	return nil
+}
+
+func (impl *PersistenceImplementation) DeleteUser(ctx context.Context) error {
+	return nil
+}
+
+func (impl *PersistenceImplementation) UpdateUser(ctx context.Context) error {
+	return nil
+}
+
 // Database Name
 
-var databaseName = "User"
+var databaseName = "user"
 
 var database = persistence.NewPDatabase(databaseName)
 
