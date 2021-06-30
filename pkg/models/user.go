@@ -1,15 +1,19 @@
 package models
 
-import "go.mongodb.org/mongo-driver/bson/primitive"
+import (
+	"time"
+
+	"go.mongodb.org/mongo-driver/bson/primitive"
+)
 
 type UserModel struct {
 	ID primitive.ObjectID `bson:"_id,omitempty"`
 
 	ProfileID primitive.ObjectID `bson:"profile_id,omitempty"`
 
-	Profiles map[string]primitive.ObjectID
+	Profiles map[string]primitive.ObjectID `bson:"profiles"`
 
-	Locations map[string]primitive.ObjectID
+	Locations map[string]primitive.ObjectID `bson:"locations"`
 
 	Firstname    string `bson:"firstname,omitempty" fake:"{firstname}"`
 	Lastname     string `bson:"lastname,omitempty" fake:"{lastname}"`

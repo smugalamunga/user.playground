@@ -2,11 +2,14 @@ package mongodb
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/smugalamunga/playground/pkg/configuration"
 	"github.com/smugalamunga/playground/pkg/logging"
 	"github.com/smugalamunga/playground/pkg/persistence"
+	"github.com/smugalamunga/user.playground/pkg/models"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -20,11 +23,11 @@ type PersistenceInterface interface {
 
 	Destroy(ctx context.Context) error
 
-	CreateUser(ctx context.Context, user User) error
+	CreateUser(ctx context.Context, user *models.UserModel) (*primitive.ObjectID, error)
 
-	FindUserByUsername(ctx context.Context, username string) (User, error)
+	FindUserByUsername(ctx context.Context, username string) (*models.UserModel, error)
 
-	FindUserByUserID(ctx context.Context, id UserID) (User, error)
+	FindUserByUserID(ctx context.Context, id UserID) (*models.UserModel, error)
 
 	DeleteUser(ctx context.Context) error
 
@@ -47,36 +50,40 @@ func NewPersistenceImplementationConfiguration(cfg *configuration.PersistenceCon
 	}
 }
 
-func (impl *PersistenceImplementation) CreateUser(ctx context.Context, user User) (UserID, error) {
+func (impl *PersistenceImplementation) CreateUser(ctx context.Context, user *models.UserModel) (*primitive.ObjectID, error) {
 	p, err := persistence.NewPersistence(ctx, impl.cfg, logging.NewLogger())
 	if err != nil {
-		return "", err
+		return nil, err
 	}
-	result, err = p.Create(ctx, databaseName, userCollectionName, user)
+	result, err := p.Create(ctx, databaseName, userCollectionName, user)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
-	return UseriD(result.InsertedID.String()), nil
+
+	if objectId, ok := result.InsertedID.(primitive.ObjectID); ok {
+		return &objectId, nil
+	}
+	return nil, fmt.Errorf("Error converting result to object id")
 }
 
-func (impl *PersistenceImplementation) FindUserByUsername(ctx context.Context, username string) (User, error) {
+func (impl *PersistenceImplementation) FindUserByUsername(ctx context.Context, username string) (*models.UserModel, error) {
 	p, err := persistence.NewPersistence(ctx, impl.cfg, logging.NewLogger())
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	var user models.UserModel
-	p.Find(ctx, databaseName, userCollectionName, getUserByUsernameFilter, user)
-	return nil
+	p.Find(ctx, databaseName, userCollectionName, getUserByUsernameFilter, &user)
+	return &user, nil
 }
 
-func (impl *PersistenceImplementation) FindUserByUserID(ctx context.Context, id UserID) (User, error) {
+func (impl *PersistenceImplementation) FindUserByUserID(ctx context.Context, id UserID) (*models.UserModel, error) {
 	p, err := persistence.NewPersistence(ctx, impl.cfg, logging.NewLogger())
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	var user models.UserModel
-	p.Find(ctx, databaseName, userCollectionName, getUserByUserIDFilter, user)
-	return nil
+	p.Find(ctx, databaseName, userCollectionName, getUserByUserIDFilter, &user)
+	return &user, nil
 }
 
 func (impl *PersistenceImplementation) DeleteUser(ctx context.Context) error {

@@ -3,6 +3,7 @@ module github.com/smugalamunga/user.playground
 go 1.16
 
 require (
+	github.com/brianvoe/gofakeit/v6 v6.5.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/go-cmp v0.5.5 // indirect
 	github.com/nats-io/nats.go v1.11.0 // indirect
@@ -26,6 +27,7 @@ replace github.com/smugalamunga/messaging.playground => ../messaging.playground
 replace github.com/smugalamunga/workflow.playground => ../workflow.playground
 
 replace github.com/smugalamunga/instrumentation.playground => ../instrumentation.playground
+
 //# git config --global --add url."git@github.com:".insteadOf "https://github.com/"
 //# export GOPRIVATE=github.com/smugalamunga/*
 //# go get github.com/smugalamunga/playground
@@ -38,5 +40,3 @@ replace github.com/smugalamunga/instrumentation.playground => ../instrumentation
 //# go get google.golang.org/protobuf
 //# go get -u google.golang.org/grpc
 //# go mod tidy
-
-
