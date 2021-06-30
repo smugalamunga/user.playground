@@ -16,8 +16,6 @@ import (
 
 var _ (PersistenceInterface) = (*PersistenceImplementation)(nil)
 
-type UserID string
-
 type PersistenceInterface interface {
 	Initialize(ctx context.Context) error
 
@@ -27,7 +25,7 @@ type PersistenceInterface interface {
 
 	FindUserByUsername(ctx context.Context, username string) (*models.UserModel, error)
 
-	FindUserByUserID(ctx context.Context, id UserID) (*models.UserModel, error)
+	FindUserByUserID(ctx context.Context, id string) (*models.UserModel, error)
 
 	DeleteUser(ctx context.Context) error
 
@@ -71,19 +69,22 @@ func (impl *PersistenceImplementation) FindUserByUsername(ctx context.Context, u
 	if err != nil {
 		return nil, err
 	}
-	var user models.UserModel
-	p.Find(ctx, databaseName, userCollectionName, getUserByUsernameFilter, &user)
-	return &user, nil
+	var user []models.UserModel
+	err = p.Find(ctx, databaseName, userCollectionName, getUserByUsernameFilter(username), &user)
+	if err != nil {
+		return nil, err
+	}
+	return &user[0], nil
 }
 
-func (impl *PersistenceImplementation) FindUserByUserID(ctx context.Context, id UserID) (*models.UserModel, error) {
+func (impl *PersistenceImplementation) FindUserByUserID(ctx context.Context, id string) (*models.UserModel, error) {
 	p, err := persistence.NewPersistence(ctx, impl.cfg, logging.NewLogger())
 	if err != nil {
 		return nil, err
 	}
-	var user models.UserModel
-	p.Find(ctx, databaseName, userCollectionName, getUserByUserIDFilter, &user)
-	return &user, nil
+	var user []models.UserModel
+	p.Find(ctx, databaseName, userCollectionName, getUserByUserIDFilter(id), &user)
+	return &user[0], nil
 }
 
 func (impl *PersistenceImplementation) DeleteUser(ctx context.Context) error {
@@ -202,9 +203,17 @@ var userValidator = persistence.NewValidator(userValidatorName, userSchema)
 
 var getUserByUserIDFilterName = "GetUserByUserID"
 
-func getUserByUserIDFilter(id UserID) bson.M {
+func getUserByUserIDFilter(id string) bson.M {
+	objectId, err := primitive.ObjectIDFromHex(id)
+
+	if err != nil {
+		// TODO: Look into Error Case
+		return bson.M{
+			"_id": primitive.NewObjectID(),
+		}
+	}
 	return bson.M{
-		"_id": id,
+		"_id": objectId,
 	}
 }
 

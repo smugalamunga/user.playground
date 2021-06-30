@@ -14,9 +14,9 @@ func main() {
 	implementation = mongodb.NewPersistenceImplementation()
 	ctx := context.Background()
 
-	for i := 0; i < 100000; i++ {
-		CreateUser(ctx)
-	}
+	// for i := 0; i < 100000; i++ {
+	// 	CreateUser(ctx)
+	// }
 
 	// var wg sync.WaitGroup
 	// for i := 0; i < 100000; i++ {
@@ -24,6 +24,20 @@ func main() {
 	// 	go CreateUser(ctx, &wg)
 	// }
 	// wg.Wait()
+
+	var username = "Reilly6239"
+	user, err := implementation.FindUserByUsername(ctx, username)
+	if err != nil {
+		panic(err)
+	}
+	log.Println(user)
+
+	var id = "5379ac9e3993bed550bb08fc"
+	user, err = implementation.FindUserByUserID(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	log.Println(user)
 
 }
 
