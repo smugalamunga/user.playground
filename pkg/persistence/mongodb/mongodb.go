@@ -24,6 +24,8 @@ type PersistenceInterface interface {
 
 	FindUserByUsername(ctx context.Context, username string) (User, error)
 
+	FindUserByUserID(ctx context.Context, id UserID) (User, error)
+
 	DeleteUser(ctx context.Context) error
 
 	UpdateUser(ctx context.Context) error
@@ -64,6 +66,16 @@ func (impl *PersistenceImplementation) FindUserByUsername(ctx context.Context, u
 	}
 	var user models.UserModel
 	p.Find(ctx, databaseName, userCollectionName, getUserByUsernameFilter, user)
+	return nil
+}
+
+func (impl *PersistenceImplementation) FindUserByUserID(ctx context.Context, id UserID) (User, error) {
+	p, err := persistence.NewPersistence(ctx, impl.cfg, logging.NewLogger())
+	if err != nil {
+		return "", err
+	}
+	var user models.UserModel
+	p.Find(ctx, databaseName, userCollectionName, getUserByUserIDFilter, user)
 	return nil
 }
 
@@ -180,6 +192,14 @@ var userSchema = bson.M{
 var userValidator = persistence.NewValidator(userValidatorName, userSchema)
 
 // Filters
+
+var getUserByUserIDFilterName = "GetUserByUserID"
+
+func getUserByUserIDFilter(id UserID) bson.M {
+	return bson.M{
+		"_id": id,
+	}
+}
 
 var getUserByUsernameFilterName = "GetUserByUsername"
 
