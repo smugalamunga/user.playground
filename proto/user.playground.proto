@@ -28,6 +28,10 @@ message User {
     google.protobuf.Timestamp created = 9;
 
     google.protobuf.Timestamp updated = 10;
+
+    map<string, string> profiles = 11;
+
+    map<string, string> locations = 12;
 }
 
 message Location {
