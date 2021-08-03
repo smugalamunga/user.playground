@@ -17,6 +17,7 @@ require (
 	go.mongodb.org/mongo-driver v1.5.2
 	golang.org/x/text v0.3.6 // indirect
 	google.golang.org/grpc v1.38.0
+	google.golang.org/protobuf v1.27.1 // indirect
 )
 
 replace github.com/smugalamunga/playground => ../playground
@@ -26,6 +27,7 @@ replace github.com/smugalamunga/messaging.playground => ../messaging.playground
 replace github.com/smugalamunga/workflow.playground => ../workflow.playground
 
 replace github.com/smugalamunga/instrumentation.playground => ../instrumentation.playground
+
 //# git config --global --add url."git@github.com:".insteadOf "https://github.com/"
 //# export GOPRIVATE=github.com/smugalamunga/*
 //# go get github.com/smugalamunga/playground
@@ -38,5 +40,3 @@ replace github.com/smugalamunga/instrumentation.playground => ../instrumentation
 //# go get google.golang.org/protobuf
 //# go get -u google.golang.org/grpc
 //# go mod tidy
-
-

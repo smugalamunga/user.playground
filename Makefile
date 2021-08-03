@@ -14,6 +14,7 @@ generate:
 	--java_out=pb/java \
 	--grpc-java_out=pb/java \
 	-I=. \
+	-I=/home/jkurisu/Applications/protoc/include \
 	-I=${GOPATH}/src/github.com/envoyproxy/protoc-gen-validate \
 	--validate_out="lang=go:${GOPATH}/src" \
 	proto/*.proto
