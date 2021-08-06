@@ -14,6 +14,7 @@ generate:
 	--java_out=pb/java \
 	--grpc-java_out=pb/java \
 	-I=. \
+	-I=${PROTOC_HOME}/include \
 	-I=${GOPATH}/src/github.com/envoyproxy/protoc-gen-validate \
 	--validate_out="lang=go:${GOPATH}/src" \
 	proto/*.proto
@@ -22,5 +23,4 @@ clean:
 	rm -rf pb/*
 	rm -rf cmd
 	rm -rf pkg/services/user*
-	
 	

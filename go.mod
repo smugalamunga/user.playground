@@ -18,6 +18,22 @@ require (
 	go.mongodb.org/mongo-driver v1.5.2
 	golang.org/x/text v0.3.6 // indirect
 	google.golang.org/grpc v1.38.0
+
+	//github.com/brianvoe/gofakeit/v6 v6.5.0
+	//github.com/kr/text v0.2.0 // indirect
+	//github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
+	//github.com/onsi/ginkgo v1.16.4
+	//github.com/onsi/gomega v1.13.0
+	//github.com/smugalamunga/playground v0.0.0-20210512110832-eaf2ab01155d
+	//github.com/stretchr/testify v1.7.0
+	//go.mongodb.org/mongo-driver v1.5.2
+	//golang.org/x/crypto v0.0.0-20210314154223-e6e6c4f2bb5b // indirect
+	//golang.org/x/lint v0.0.0-20210508222113-6edffad5e616 // indirect
+	//golang.org/x/net v0.0.0-20210610132358-84b48f89b13b // indirect
+	//golang.org/x/sys v0.0.0-20210611083646-a4fc73990273 // indirect
+	//golang.org/x/tools v0.1.3 // indirect
+	//google.golang.org/grpc v1.38.0
+	//gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f // indirect
 )
 
 replace github.com/smugalamunga/playground => ../playground
