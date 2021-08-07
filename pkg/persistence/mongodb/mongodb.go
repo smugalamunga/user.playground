@@ -36,7 +36,7 @@ func NewPersistenceImplementationConfiguration(cfg *configuration.PersistenceCon
 
 // Database Name
 
-var databaseName = "User"
+var databaseName = "user"
 
 var database = persistence.NewPDatabase(databaseName)
 

@@ -13,3 +13,7 @@ func RemoveUserActivity(ctx context.Context) error {
 func UpdateUserActivity(ctx context.Context) error {
 	return nil
 }
+
+func SendMessageActivity(ctx context.Context) error {
+	return nil
+}
